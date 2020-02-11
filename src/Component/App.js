@@ -1,16 +1,26 @@
 import React from 'react';
-import {ApolloProvider} from "react-apollo-hooks";
+import {gql} from "apollo-boost";
 import {ThemeProvider} from 'styled-components';
 import GlobalStyles from "../Styles/GlobalStyles";
 import Theme from '../Styles/Theme';
 import Router from './Router';
-import Client from '../Apollo/Client';
+import {useQuery} from 'react-apollo-hooks';
 
-export default () => (
+const QUERY = gql`
+  {
+    isLogin @client
+  }
+  `;
+
+export default () => {
+
+  const { data : {isLogin} } = useQuery(QUERY);
+
+  return (
   <ThemeProvider theme={Theme}>
     <>
       <GlobalStyles/>
-      <Router isLogin={false}/>
+      <Router isLogin={isLogin}/>
     </>
   </ThemeProvider>
-  );
+  )};
