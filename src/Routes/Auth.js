@@ -1,8 +1,8 @@
 import React,{useState} from "react";
 import styled from "styled-components";
-import Footer from "../Component/Footer";
 import Input from "../Component/Input";
 import Button from "../Component/Button";
+import useInput from "../Hooks/useInput";
 const Wrapper = styled.div`
     height:80vh;
     display:flex;
@@ -36,7 +36,7 @@ const Form = styled(Box)`
         width:100%;
         input{ 
             width:100%;
-            &:first-child{
+            &:not(:last-child){
                 margin-bottom:10px;
             }
         }
@@ -48,18 +48,24 @@ const Form = styled(Box)`
 
 export default () => {
     const [action,setAction]=useState("login"); 
+    const email=useInput("");
+    const password=useInput("");
+    console.log(email,password);
     return (
      <Wrapper>
          <Form>
              {action === "login" 
              ?<form>
-                <Input/>
-                <Input/>
+                <Input placeholder={"이메일"} {...email}/>
+                <Input placeholder={"비밀번호"} {...password}/>
                 <Button text={"로그인"}/>
              </form> 
              :<form>
-                <Input/>
-                <Input/>
+                <Input placeholder={"성"}/>
+                <Input placeholder={"이름"}/>
+                <Input placeholder={"이메일"}/>
+                <Input placeholder={"별칭"}/>
+                <Input placeholder={"비밀번호"}/>
              <Button text={"가입"}/>
               </form>  }
          </Form>
