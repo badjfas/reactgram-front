@@ -53,38 +53,48 @@ export default ({
   lastName,
   email,
   setAction,
-  onLogin,
-  onCreateUser
+  onSubmit,
+  secret
 }) => (
   <Wrapper>
     <Form>
-      {action === "logIn" ? (
-        <form onSubmit={onLogin}>
+      {action === "logIn" && (
+        <form onSubmit={onSubmit}>
           <Input placeholder={"Email"} {...email} type="email" />
           <Button text={"Log in"} />
         </form>
-      ) : (
-        <form onSubmit={onCreateUser}>
+      )}
+      {action=== "signUp" && (
+        <form onSubmit={onSubmit}>
           <Input placeholder={"First name"} {...firstName} />
           <Input placeholder={"Last name"} {...lastName} />
           <Input placeholder={"Email"} {...email} type="email" />
           <Input placeholder={"Username"} {...userName} />
           <Button text={"Sign up"} />
         </form>
+      )} 
+      {action === "confirm" && (
+        <form onSubmit={onSubmit}>
+          <Input placeholder={"SECRET CODE"} {...secret} />
+          <Button text={"Go!"}/>
+        </form>
       )}
     </Form>
-    <StateChanger>
-      {action === "logIn" ? (
-        <>
-          Don't have an account?{" "}
-          <Link onClick={() => setAction("signUp")}>Sign up</Link>
-        </>
-      ) : (
-        <>
-          Have an account?{" "}
-          <Link onClick={() => setAction("logIn")}>Log in</Link>
-        </>
-      )}
-    </StateChanger>
+    {action !== "confirm" && (
+      <StateChanger>
+        {action === "logIn" ? (
+          <>
+            Don't have an account?{" "}
+            <Link onClick={() => setAction("signUp")}>Sign up</Link>
+          </>
+        ) : (
+          <>
+            Have an account?{" "}
+            <Link onClick={() => setAction("logIn")}>Log in</Link>
+          </>
+        )}
+      </StateChanger>
+    )}
+   
   </Wrapper>
 );
