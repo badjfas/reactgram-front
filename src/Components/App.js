@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import styled, {ThemeProvider} from 'styled-components';
 import {useQuery} from 'react-apollo-hooks';
 import {HashRouter as Router} from "react-router-dom";
+import Routes from "./Routes";
 //files
 import GlobalStyles from "../Styles/GlobalStyles";
 import Theme from '../Styles/Theme';
@@ -34,11 +35,13 @@ export default () => {
     <>
    <GlobalStyles/>
    <Router>
+   <>
     <Header/>
       <Wrapper>
-        <Router isLogin={isLogin}/>
+        <Routes isLogin={isLogin}/>
         <Footer/>
       </Wrapper>
+      </>
        </Router>
       <ToastContainer position={toast.POSITION.BOTTOM_LEFT}/>
     </>

@@ -16,7 +16,8 @@ const Input = ({
   value,
   onChange,
   type = "text",
-  className
+  className,
+  to
 }) => (
   <Container
     className={className}
@@ -25,6 +26,7 @@ const Input = ({
     value={value}
     onChange={onChange}
     type={type}
+    to={to}
   />
 );
 
