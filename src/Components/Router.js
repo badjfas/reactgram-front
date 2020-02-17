@@ -1,4 +1,4 @@
-import {HashRouter as Router,Route,Switch} from "react-router-dom";
+import {HashRouter as Route,Switch} from "react-router-dom";
 import PropTypes from "prop-types";
 import React from "react";
 import Feed from "../Routes/Feed";
@@ -17,11 +17,9 @@ const LogoutRoutes = () =>(
 );
 
 const appRouter = ({isLogin}) => (
-    <Router>
         <Switch>
             {isLogin ? <LoginRoutes /> : <LogoutRoutes />}
         </Switch>
-    </Router>
     );
 
  appRouter.propTypes = {
