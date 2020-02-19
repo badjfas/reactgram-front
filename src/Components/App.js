@@ -36,7 +36,7 @@ export default () => {
    <GlobalStyles/>
    <Router>
    <>
-    <Header/>
+   {isLogin&&<Header/>} 
       <Wrapper>
         <Routes isLogin={isLogin}/>
         <Footer/>
