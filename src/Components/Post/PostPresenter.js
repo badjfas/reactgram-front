@@ -3,12 +3,13 @@ import styled from "styled-components";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
 import { HeartEmpty, HeartFill, Comment } from "../Icons";
-import TextareaAutosize from 'react-autosize-textarea';
+import TextareaAutosize from "react-autosize-textarea";
 
 const Post = styled.div`
   ${props => props.theme.whiteBox};
   width: 100%;
   max-width: 600px;
+  user-select:none;
   margin-bottom: 25px;
 `;
 
@@ -29,18 +30,18 @@ const Location = styled.span`
 `;
 
 const Files = styled.div`
-    position:relative;    
-    padding-top:100%;
+  position: relative;
+  padding-top: 100%;
 `;
 
 const File = styled.img`
   max-width: 100%;
   width:100%;
   height:100%;
-  opacity:${props=>(props.showing?1: 0)};
+  opacity:${props => (props.showing ? 1 : 0)};
   position:absolute;
   top:0;
-  background-image:ulr(${props=>props.src})
+  background-image:ulr(${props => props.src})
   background-size:cover;
   background-position:center;
   transition:opacity .5s linear;
@@ -81,7 +82,7 @@ const Textarea = styled(TextareaAutosize)`
   width:100%;
   resize:none;
   font-size:14px;
-  font-color:${props=>props.theme.lightGreyColor}
+  font-color:${props => props.theme.lightGreyColor}
   &:focus{
       outline:none;
   };
@@ -95,7 +96,8 @@ export default ({
   likeCount,
   createdAt,
   newComment,
-  currentItem
+  currentItem,
+  toggleLike
 }) => (
   <Post>
     <PostHeader>
@@ -107,11 +109,20 @@ export default ({
     </PostHeader>
     <Files>
       {files &&
-        files.map((file,index) => <File key={file.id} id={file.id} src={file.Url}  showing={index===currentItem}/>)}
+        files.map((file, index) => (
+          <File
+            key={file.id}
+            id={file.id}
+            src={file.Url}
+            showing={index === currentItem}
+          />
+        ))}
     </Files>
     <Meta>
       <Buttons>
-        <Button>{isLiked ? <HeartFill /> : <HeartEmpty />}</Button>
+        <Button onClick={toggleLike}>
+          {isLiked ? <HeartFill /> : <HeartEmpty />}
+        </Button>
         <Button>
           <Comment />
         </Button>
@@ -120,7 +131,7 @@ export default ({
         text={likeCount === 1 ? "1 좋아요" : `${likeCount}좋아요`}
       ></FatText>
       <Timestamp>{createdAt}</Timestamp>
-      <Textarea  placeholder={"댓글"}{...newComment}/>
+      <Textarea placeholder={"댓글"} {...newComment} />
     </Meta>
   </Post>
 );

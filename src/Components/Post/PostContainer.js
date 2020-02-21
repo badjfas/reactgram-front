@@ -1,7 +1,9 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import PostPresenter from "./PostPresenter";
 import PropTypes from "prop-types";
 import useInput from "../../Hooks/useInput";
+import { useMutation } from "react-apollo-hooks";
+import { TOGGLE_LIKE, ADD_COMMENT } from "./PostQueries";
 
 const PostContainer = ({
   id,
@@ -14,25 +16,44 @@ const PostContainer = ({
   location,
   caption
 }) => {
-    const [isLikeds, setIsLiked] = useState(isLiked);
-    const [likeCounts, setLikeCount] = useState(likeCount);
-    const [currentItem,setCurrentItem] = useState(0);
-    const comment = useInput("");
-    
-    const slide = () => {
-    const totalFiles =files.length;
-        if(currentItem===totalFiles-1){
-            setTimeout(()=>setCurrentItem(0),3000);
-      }else {
-          setTimeout(()=>setCurrentItem(currentItem+1),3000);
-        }
-    };
-    useEffect(()=>{
-        slide();
-    },[currentItem]);
-  
+  const [isLikeds, setIsLiked] = useState(isLiked);
+  const [likeCounts, setLikeCount] = useState(likeCount);
+  const [currentItem, setCurrentItem] = useState(0);
+  const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, {
+    variables: { postId: id }
+  });
+  const [addCommentMutation] = useMutation(ADD_COMMENT, {
+    variables: { postId: id, text: comments.value }
+  });
+  const comment = useInput("");
+
+  const slide = () => {
+    const totalFiles = files.length;
+    if (currentItem === totalFiles - 1) {
+      setTimeout(() => setCurrentItem(0), 3000);
+    } else {
+      setTimeout(() => setCurrentItem(currentItem + 1), 3000);
+    }
+  };
+  useEffect(() => {
+    slide();
+  }, [currentItem]);
+
+  const toggleLike =async() => {
+   await toggleLikeMutation();
+    if (isLikeds === true) {
+      setIsLiked(false);
+      setLikeCount(likeCounts- 1);
+      console.log(likeCount,"-")
+    } else {
+      setIsLiked(true);
+      setLikeCount(likeCounts + 1);
+      console.log(likeCount,"+")
+    }
+  };
+
   return (
-      <PostPresenter
+    <PostPresenter
       user={user}
       files={files}
       likeCount={likeCounts}
@@ -45,7 +66,7 @@ const PostContainer = ({
       caption={caption}
       location={location}
       currentItem={currentItem}
-      
+      toggleLike={toggleLike}
     />
   );
 };
