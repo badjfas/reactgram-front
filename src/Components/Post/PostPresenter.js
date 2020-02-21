@@ -9,7 +9,7 @@ const Post = styled.div`
   ${props => props.theme.whiteBox};
   width: 100%;
   max-width: 600px;
-  user-select:none;
+  user-select: none;
   margin-bottom: 25px;
 `;
 
@@ -86,8 +86,21 @@ const Textarea = styled(TextareaAutosize)`
   &:focus{
       outline:none;
   };
+  border-bottom: ${props => props.theme.lightGreyColor} 1px solid;
 
 `;
+const Comments = styled.ul`
+  margin-top: 10px;
+`;
+const CommentsArea = styled.li`
+width: 100%;
+max-width: 600px;
+  margin-bottom: 7px;
+  span {
+    margin-right: 5px;
+  }
+`;
+
 export default ({
   user: { userName, avatar },
   location,
@@ -97,7 +110,10 @@ export default ({
   createdAt,
   newComment,
   currentItem,
-  toggleLike
+  toggleLike,
+  onKeyPress,
+  comments,
+  selfComments
 }) => (
   <Post>
     <PostHeader>
@@ -131,7 +147,30 @@ export default ({
         text={likeCount === 1 ? "1 좋아요" : `${likeCount}좋아요`}
       ></FatText>
       <Timestamp>{createdAt}</Timestamp>
-      <Textarea placeholder={"댓글"} {...newComment} />
+      {comments && (
+        <Comments>
+          {comments.map(comment => (
+            <CommentsArea key={comment.id}>
+              <FatText text={comment.user.userName} />
+              {comment.text}
+            </CommentsArea>
+          ))}
+           {selfComments.map(comment => (
+            <CommentsArea key={comment.id}>
+              <FatText text={comment.user.userName} />
+              {comment.text}
+            </CommentsArea>
+          ))} 
+        </Comments>
+      )}
+      <form>
+        <Textarea
+          placeholder={"댓글"}
+          value={newComment.value}
+          onKeyPress={onKeyPress}
+          onChange={newComment.onChange}
+        />
+      </form>
     </Meta>
   </Post>
 );

@@ -7,11 +7,13 @@ export const TOGGLE_LIKE=gql`
 `;
 
 export const ADD_COMMENT=gql`
-    mutation addComment($postId:String!,$text:String){
+    mutation addComment($text:String!,$postId:String!){
         addComment(postId:$postId,text:$text){
             id
             text
+            user{
             userName
+         }
         }
     }
 `;

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import PostPresenter from "./PostPresenter";
 import PropTypes from "prop-types";
 import useInput from "../../Hooks/useInput";
-import { useMutation } from "react-apollo-hooks";
+import { useMutation, useQuery } from "react-apollo-hooks";
 import { TOGGLE_LIKE, ADD_COMMENT } from "./PostQueries";
+import { ME } from "../../SharedQueries";
+import { toast } from "react-toastify";
 
 const PostContainer = ({
   id,
@@ -16,16 +18,18 @@ const PostContainer = ({
   location,
   caption
 }) => {
+  const {data:meQuery} = useQuery(ME);
+  const comment = useInput("");
   const [isLikeds, setIsLiked] = useState(isLiked);
   const [likeCounts, setLikeCount] = useState(likeCount);
   const [currentItem, setCurrentItem] = useState(0);
+  const [selfComments, setSelfComments] = useState([]);
   const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, {
     variables: { postId: id }
   });
   const [addCommentMutation] = useMutation(ADD_COMMENT, {
-    variables: { postId: id, text: comments.value }
+    variables: { postId: id, text: comment.value }
   });
-  const comment = useInput("");
 
   const slide = () => {
     const totalFiles = files.length;
@@ -39,16 +43,34 @@ const PostContainer = ({
     slide();
   }, [currentItem]);
 
-  const toggleLike =async() => {
-   await toggleLikeMutation();
+  const toggleLike = async () => {
+    await toggleLikeMutation();
     if (isLikeds === true) {
       setIsLiked(false);
-      setLikeCount(likeCounts- 1);
-      console.log(likeCount,"-")
+      setLikeCount(likeCounts - 1);
+      console.log(likeCount, "-");
     } else {
       setIsLiked(true);
       setLikeCount(likeCounts + 1);
-      console.log(likeCount,"+")
+      console.log(likeCount, "+");
+    }
+  };
+
+  const onKeyPress =async (e)  => {
+    const { which } = e;
+    if (which === 13) {
+      e.preventDefault();
+      comment.setValue("");
+      try{
+        await addCommentMutation();
+        setSelfComments([...selfComments, {
+          id: Math.floor(Math.random() * 200),
+          text: comment.value,
+          user: {userName:meQuery.me.username}
+        }]);
+      }catch{
+        toast.error("잠시후 다시 시도 해주세요.")
+      }
     }
   };
 
@@ -67,6 +89,8 @@ const PostContainer = ({
       location={location}
       currentItem={currentItem}
       toggleLike={toggleLike}
+      onKeyPress={onKeyPress}
+      selfComments={selfComments}
     />
   );
 };
@@ -90,12 +114,10 @@ PostContainer.propTypes = {
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired,
-      user: PropTypes.objectOf(
-        PropTypes.shape({
-          id: PropTypes.string.isRequired,
-          userName: PropTypes.string.isRequired
-        })
-      )
+      user: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        userName: PropTypes.string.isRequired
+      })
     })
   ).isRequired,
   createdAt: PropTypes.string

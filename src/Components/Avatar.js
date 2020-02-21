@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const getSize = size => {
+export const getSize = size => {
     let number;
     if (size === "sm") {
       number = 30;
