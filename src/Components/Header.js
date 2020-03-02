@@ -77,7 +77,7 @@ export default withRouter(({ history }) => {
     <Header>
       <HeaderWrapper>
         <HeaderColumn>
-          <HeaderLink>
+          <HeaderLink to="/">
             <Instagram />
           </HeaderLink>
         </HeaderColumn>

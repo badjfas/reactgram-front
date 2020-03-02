@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 import styled from "styled-components";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
@@ -11,6 +12,9 @@ const Post = styled.div`
   max-width: 600px;
   user-select: none;
   margin-bottom: 25px;
+  a{
+    color:inherit;
+  }
 `;
 
 const PostHeader = styled.div`
@@ -113,13 +117,16 @@ export default ({
   toggleLike,
   onKeyPress,
   comments,
-  selfComments
+  selfComments,
+  caption
 }) => (
   <Post>
     <PostHeader>
       <Avatar size="sm" url={avatar} />
       <UserColumn>
+        <Link to={`/${userName}`}>
         <FatText text={userName} />
+        </Link>
         <Location>{location}</Location>
       </UserColumn>
     </PostHeader>

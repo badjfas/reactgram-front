@@ -3,7 +3,7 @@ import FatText from "../../Components/FatText";
 import styled from "styled-components";
 import Loader from "../../Components/Loader";
 import UserCard from "../../Components/UserCard";
-
+import SquarePost from "../../Components/SquarePost"
 const Wrapper = styled.div`
   height: 50vh;
   text-align: center;
@@ -12,10 +12,16 @@ const Wrapper = styled.div`
 const Section = styled.div`
     display:grid;
     grid-gap:25px;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(4,160px);
     grid-template-rows:160px;
     gird-auto-rows:160px;
     margin-bottom:55px;
+`;
+
+const ESection = styled(Section)`
+  grid-template-columns: repeat(4, 200px);
+  grid-template-rows: 200px;
+  gird-auto-rows: 200px;
 `;
 
 
@@ -34,6 +40,8 @@ const Section = styled.div`
         );
       } else if (data && data.saerchUser && data.searchPost) {
         console.log( data.saerchUser);
+        console.log( data.searchPost);
+
         return (
           <Wrapper>
             <Section>
@@ -52,13 +60,13 @@ const Section = styled.div`
                 ))
               )}
             </Section>
-            <Section>
+            <ESection>
               {data.searchPost.length === 0 ? (
                 <FatText text="No Posts Found" />
               ) : (
-                data.searchPost.map(post => null)
+                data.searchPost.map(post => <SquarePost key ={post.id} likeCount={post.likeCount} commentCount={post.commentCount} file={post.files[0]}/>)
               )}
-            </Section>
+            </ESection>
           </Wrapper>
         );
       }

@@ -7,6 +7,7 @@ query search($term:String!){
            Url
        }
        likeCount
+       commentCount
     },
     saerchUser(term:$term){
         id
