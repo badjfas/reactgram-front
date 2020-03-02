@@ -47,6 +47,7 @@ const Section = styled.div`
                     isFollowing={user.isFollowing}
                     url={user.avatar}
                     isSelf={user.isSelf}
+                    id={user.id}
                   />
                 ))
               )}
@@ -55,7 +56,7 @@ const Section = styled.div`
               {data.searchPost.length === 0 ? (
                 <FatText text="No Posts Found" />
               ) : (
-                data.searchPost.map(post =>null)
+                data.searchPost.map(post => null)
               )}
             </Section>
           </Wrapper>
