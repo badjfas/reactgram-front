@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { HeartFill, CommentFill } from "./Icons";
 import PropTypes from "prop-types";
-
+import { Link } from "react-router-dom";
 const Overlay = styled.div`
     background-color:rgba(0,0,0,0.6);
     width:100%;
@@ -36,13 +36,14 @@ const Number = styled.div`
         margin-right:20px;
     }
 `;
+
 const NumberText = styled.span`
     margin-left:10px;
     font-size:16px;
 `;
 
-const SquarePost = ({id,likeCount,commentCount,file}) =>  (
-    <Container bg={file.Url} key={id}> 
+const SquarePost = ({id,likeCount,commentCount,file,onClick,postid,username}) =>  (
+    <Container bg={file.Url} key={id} onClick={onClick}>
       <Overlay>
         <Number>
             <HeartFill/>

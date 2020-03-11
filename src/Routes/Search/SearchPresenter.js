@@ -39,8 +39,6 @@ const ESection = styled(Section)`
           </Wrapper>
         );
       } else if (data && data.saerchUser && data.searchPost) {
-        console.log( data.saerchUser);
-        console.log( data.searchPost);
 
         return (
           <Wrapper>

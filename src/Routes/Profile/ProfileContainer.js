@@ -19,6 +19,7 @@ const GET_USER = gql`
       postsCount
       posts {
         id
+        caption
         files {
           Url
         }

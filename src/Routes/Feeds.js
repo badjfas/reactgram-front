@@ -5,6 +5,7 @@ import { useQuery } from "react-apollo-hooks";
 import styled from "styled-components";
 import Loader from "../Components/Loader";
 import Post from "../Components/Post";
+
 const FEED_QUERY = gql`
   {
     seeFeed {
@@ -44,7 +45,6 @@ const Wrapper = styled.div`
 
 export default () => {
   const { data, loading } = useQuery(FEED_QUERY);
-  console.log(data);
   return (
     <Wrapper>
       <Helmet><title>Feed | Reactgram  </title></Helmet>

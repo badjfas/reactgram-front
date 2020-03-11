@@ -7,6 +7,8 @@ import FatText from "../../Components/FatText";
 import FollowButton from "../../Components/FollowButton";
 import SquarePost from "../../Components/SquarePost";
 import Button from "../../Components/Button";
+import Modal from "../../Components/Modal";
+import { Link } from "react-router-dom";
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -20,6 +22,7 @@ const Header = styled.header`
   margin: 0 auto;
   margin-bottom: 40px;
 `;
+
 
 const HeaderColumn = styled.div``;
 
@@ -35,6 +38,7 @@ const Username = styled.span`
 
 const Counts = styled.ul`
   display: flex;
+  
   margin: 15px 0px;
 `;
 
@@ -42,6 +46,7 @@ const Count = styled.li`
   font-size: 16px;
   &:not(:last-child) {
     margin-right: 10px;
+    margin-left:20px;
   }
 `;
 
@@ -55,10 +60,14 @@ const Bio = styled.p`
 
 const Posts = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 200px);
-  grid-template-rows: 200px;
-  grid-auto-rows: 200px;
+  grid-template-columns: repeat(4, 250px);
+  grid-template-rows: 250px;
+  grid-auto-rows: 250px;
 `;
+
+const EPosts =styled(Posts)`
+`;
+
 
 export default  ({data,loading,logUserOut}) => {
 if(loading) {
@@ -79,17 +88,23 @@ if(loading) {
      }} = data;
      return (
        <Wrapper>
-       <Helmet>
-         <title>{userName} | Reactgram</title>
-       </Helmet>
+         <Helmet>
+           <title>{userName} | Reactgram</title>
+         </Helmet>
          <Header>
            <HeaderColumn>
              <Avatar size="lg" url={avatar} />
            </HeaderColumn>
            <HeaderColumn>
              <span>
-             <Username>{userName}</Username>
-             {isSelf?<Button onClick={logUserOut} text="로그아웃"/>:  <FollowButton id={id} isFollowing={isFollowing}/>}
+               <UsernameRow>
+                 <Username>{userName}</Username>
+               </UsernameRow>
+               {isSelf ? (
+                 <Button onClick={logUserOut} text="로그아웃" />
+               ) : (
+                 <FollowButton id={id} isFollowing={isFollowing} />
+               )}
              </span>
              <Counts>
                <Count>
@@ -106,9 +121,26 @@ if(loading) {
              <Bio>{bio}</Bio>
            </HeaderColumn>
          </Header>
-         <Posts>
-            {posts&&posts.map((post => <SquarePost key ={post.id} likeCount={post.likeCount} commentCount={post.commentCount} file={post.files[0]}/>))}
-         </Posts>
+         <EPosts>
+           {posts &&
+             posts.map(post => (
+               <Modal
+                 key={post.id}
+                 likeCount={post.likeCount}
+                 commentCount={post.commentCount}
+                 file={post.files[0]}
+                 postid={post.id}
+               >
+                 <SquarePost
+                   key={post.id}
+                   likeCount={post.likeCount}
+                   commentCount={post.commentCount}
+                   file={post.files[0]}
+                   postid={post.id}
+                 ></SquarePost>
+               </Modal>
+             ))}
+         </EPosts>
        </Wrapper>
      );
  }
