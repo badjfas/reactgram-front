@@ -45,7 +45,7 @@ const File = styled.img`
   opacity:${props => (props.showing ? 1 : 0)};
   position:absolute;
   top:0;
-  background-image:ulr(${props => props.src})
+  background-image:url(${props => props.src})
   background-size:cover;
   background-position:center;
   transition:opacity .5s linear;
